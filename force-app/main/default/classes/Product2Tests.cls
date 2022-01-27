@@ -1,11 +1,16 @@
 @isTest
 private class Product2Tests {
 
+    @TestSetup
+    static void SetupTestData(){
+        TestDataFactory.InsertTestData(Constants.DEFAULT_ROWS);
+    }
     /**
      * @name product2Extension_UnitTest
      * @description UnitTest for product2Extension
     **/
-    static TestMethod void Product2Extension_UnitTest(){
+    @isTest
+    static void Product2Extension_UnitTest(){
 
         // Initialise the page
         PageReference productPage = Page.Product2New;
@@ -38,8 +43,23 @@ private class Product2Tests {
             
             // and then simulate clicking the Save button. Verify that the button worked by asserting that only 5 products were saved.
             ext.save();
-            List<Product2> fullProducts = [SELECT Id FROM Product2];
-            System.assertEquals(Constants.DEFAULT_ROWS, fullProducts.size());
+            ext.GetFamilyOptions();
+            ext.GetInventory();
+        Test.stopTest();
+
+        List<Product2> fullProducts = [SELECT Id FROM Product2];
+        System.assertEquals(Constants.DEFAULT_ROWS * 2, fullProducts.size());
+    }
+
+    @isTest 
+    private static void Product2Trigger_UnitTest(){
+        
+        Test.startTest();
+        
+        Product2 product = [SELECT Id FROM Product2 LIMIT 1];
+        product.Quantity_Ordered__c = 96;
+        update product;
+
         Test.stopTest();
     }
 }

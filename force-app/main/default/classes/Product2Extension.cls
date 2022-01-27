@@ -79,8 +79,8 @@ public class Product2Extension {
         public PriceBookEntry pricebookEntryRecord {get;set;}
 
         public ProductWrapper() {
-            this.productRecord = new Product2();
-            this.pricebookEntryRecord = new PricebookEntry();
+            this.productRecord = new Product2(Initial_Inventory__c =0, Name='Test Product', isActive=true);
+            this.pricebookEntryRecord = new PricebookEntry(Unitprice=0.0);
         }    
     }
 }
